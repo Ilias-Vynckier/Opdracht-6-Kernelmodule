@@ -1,0 +1,1 @@
+cmd_/home/pi/embed2/Opdracht-6-Kernelmodule/build/modules.order := {   echo /home/pi/embed2/Opdracht-6-Kernelmodule/build/main.ko; :; } | awk '!x[$$0]++' - > /home/pi/embed2/Opdracht-6-Kernelmodule/build/modules.order

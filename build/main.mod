@@ -1,0 +1,2 @@
+/home/pi/embed2/Opdracht-6-Kernelmodule/build/main.o
+

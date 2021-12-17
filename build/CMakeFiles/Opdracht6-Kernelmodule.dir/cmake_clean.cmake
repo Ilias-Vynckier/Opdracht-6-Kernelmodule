@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o"
-  "Opdracht6-Kernelmodule"
-  "Opdracht6-Kernelmodule.pdb"
+  "libOpdracht6-Kernelmodule.a"
+  "libOpdracht6-Kernelmodule.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

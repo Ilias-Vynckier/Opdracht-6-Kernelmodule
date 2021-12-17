@@ -1,1 +1,2 @@
-/usr/bin/cc   -rdynamic CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o  -o Opdracht6-Kernelmodule 
+/usr/bin/ar qc libOpdracht6-Kernelmodule.a  CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o
+/usr/bin/ranlib libOpdracht6-Kernelmodule.a
