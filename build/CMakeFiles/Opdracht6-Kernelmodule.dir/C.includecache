@@ -13,6 +13,14 @@ linux/kernel.h
 -
 linux/gpio.h
 -
+linux/sched.h
+-
+linux/timer.h
+-
+linux/init.h
+-
+linux/hrtimer.h
+-
 
 /usr/src/linux-headers-5.10.63-v7l+/include/asm-generic/atomic-instrumented.h
 linux/build_bug.h

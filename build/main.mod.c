@@ -29,13 +29,19 @@ __used __section("__versions") = {
 	{ 0x9e9fbfdf, "param_array_ops" },
 	{ 0x7b66b44c, "param_ops_int" },
 	{ 0x9dfdf722, "gpio_free_array" },
+	{ 0x695bf5e9, "hrtimer_cancel" },
+	{ 0xec523f88, "hrtimer_start_range_ns" },
+	{ 0xa362bf8f, "hrtimer_init" },
+	{ 0x8574ca6c, "gpio_request_array" },
 	{ 0xba4c293, "gpiod_set_raw_value" },
 	{ 0xe30324cf, "gpio_to_desc" },
 	{ 0xc5850110, "printk" },
+	{ 0x5cc2a511, "hrtimer_forward" },
+	{ 0xb43f9365, "ktime_get" },
 	{ 0xb1ad28e0, "__gnu_mcount_nc" },
 };
 
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "FB9B7F826E3EC96F3CDCB57");
+MODULE_INFO(srcversion, "A404C9A266352C4609FE33A");

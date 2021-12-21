@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "gpio.h": "c",
+        "module.h": "c",
+        "sched.h": "c"
+    }
+}
