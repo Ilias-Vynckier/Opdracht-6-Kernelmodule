@@ -30,6 +30,9 @@ __used __section("__versions") = {
 	{ 0x7b66b44c, "param_ops_int" },
 	{ 0x9dfdf722, "gpio_free_array" },
 	{ 0x695bf5e9, "hrtimer_cancel" },
+	{ 0x223fc350, "kthread_stop" },
+	{ 0x977035dc, "wake_up_process" },
+	{ 0x31556c9c, "kthread_create_on_node" },
 	{ 0xec523f88, "hrtimer_start_range_ns" },
 	{ 0xa362bf8f, "hrtimer_init" },
 	{ 0x8574ca6c, "gpio_request_array" },
@@ -44,4 +47,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "A404C9A266352C4609FE33A");
+MODULE_INFO(srcversion, "8D4FE1E270C42F836449D55");

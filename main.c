@@ -21,7 +21,7 @@
 #include <linux/sched.h>
 #include <linux/timer.h>
 #include <linux/init.h>
-
+#include <linux/kthread.h>
 #include <linux/hrtimer.h>
 
 static int outputs[3] = {-1, -1, -1};
@@ -73,7 +73,7 @@ enum hrtimer_restart timer_callback0(struct hrtimer *timer_for_restart)
 
     hrtimer_forward(timer_for_restart, currtime, interval);
 
-    printk(KERN_INFO "DINK %d curtime %d\n", dinknumb0++, currtime);
+    printk(KERN_INFO "DINK %d curtime %lld\n", dinknumb0++, currtime);
     gpio_set_value(leds[0].gpio, pin_value);
     pin_value = !pin_value;
     return HRTIMER_RESTART;
@@ -89,7 +89,7 @@ enum hrtimer_restart timer_callback1(struct hrtimer *timer_for_restart)
 
     hrtimer_forward(timer_for_restart, currtime, interval);
 
-    printk(KERN_INFO "DINK1 %d curtime %d\n", dinknumb1++, currtime);
+    printk(KERN_INFO "DINK1 %d curtime %lld\n", dinknumb1++, currtime);
     gpio_set_value(leds[1].gpio, pin_value);
     pin_value = !pin_value;
     return HRTIMER_RESTART;
@@ -105,12 +105,70 @@ enum hrtimer_restart timer_callback2(struct hrtimer *timer_for_restart)
 
     hrtimer_forward(timer_for_restart, currtime, interval);
 
-    printk(KERN_INFO "DINK2 %d curtime %d\n", dinknumb2++, currtime);
+    printk(KERN_INFO "DINK2 %d curtime %lld\n", dinknumb2++, currtime);
     gpio_set_value(leds[2].gpio, pin_value);
     pin_value = !pin_value;
     return HRTIMER_RESTART;
 }
 
+/* Task handle to identify thread */
+static struct task_struct *ts0 = NULL;
+static struct task_struct *ts1 = NULL;
+static struct task_struct *ts2 = NULL;
+
+/*
+ * Thread to blink LED 2
+ */
+static int led_thread0(int i)
+{
+    printk(KERN_INFO "%s\n", __func__);
+    hrtimer_init(&hr_timer0, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
+    hr_timer0.function = &timer_callback0;
+
+    gpio_set_value(leds[0].gpio, level[i]);
+    if (!(togglespeed[i] == 0))
+    {
+        timer_interval_ns0 = togglespeed[i],
+        hrtimer_start(&hr_timer0, togglespeed[i], HRTIMER_MODE_REL);
+    }
+    return 0;
+}
+
+/*
+ * Thread to blink LED 2
+ */
+static int led_thread1(int i)
+{
+    printk(KERN_INFO "%s\n", __func__);
+    hrtimer_init(&hr_timer1, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
+    hr_timer1.function = &timer_callback1;
+
+    gpio_set_value(leds[1].gpio, level[i]);
+    if (!(togglespeed[i] == 0))
+    {
+        timer_interval_ns1 = togglespeed[i],
+        hrtimer_start(&hr_timer1, togglespeed[i], HRTIMER_MODE_REL);
+    }
+    return 0;
+}
+
+/*
+ * Thread to blink LED 2
+ */
+static int led_thread2(int i)
+{
+    printk(KERN_INFO "%s\n", __func__);
+    hrtimer_init(&hr_timer2, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
+    hr_timer2.function = &timer_callback2;
+
+    gpio_set_value(leds[2].gpio, level[i]);
+    if (!(togglespeed[i] == 0))
+    {
+        timer_interval_ns2 = togglespeed[i],
+        hrtimer_start(&hr_timer2, togglespeed[i], HRTIMER_MODE_REL);
+    }
+    return 0;
+}
 /*
  * Module init function
  */
@@ -126,13 +184,13 @@ static int __init gpiomod_init(void)
     ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
     /* init timer, add timer function */
-    interval = ktime_set(0, timer_interval_ns0);
-    hrtimer_init(&hr_timer0, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
-    hrtimer_init(&hr_timer1, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
+    //interval = ktime_set(0, timer_interval_ns0);
+
+    /*hrtimer_init(&hr_timer1, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
     hrtimer_init(&hr_timer2, CLOCK_MONOTONIC, HRTIMER_MODE_REL); /// meer timers toevoegen
-    hr_timer0.function = &timer_callback0;
+    
     hr_timer1.function = &timer_callback1;
-    hr_timer2.function = &timer_callback2;
+    hr_timer2.function = &timer_callback2;*/
 
     if (ret)
     {
@@ -147,28 +205,37 @@ static int __init gpiomod_init(void)
         {
         case 4:
             //button_irqs[0]=1;
-            gpio_set_value(leds[0].gpio, level[i]);
-            if (!(togglespeed[0] == 0))
+
+            ts0 = kthread_create(led_thread0(i), NULL, "led_thread");
+            if (ts0)
             {
-                timer_interval_ns0=togglespeed[i],
-                hrtimer_start(&hr_timer0, togglespeed[i], HRTIMER_MODE_REL);
+                wake_up_process(ts0);
+            }
+            else
+            {
+                printk(KERN_ERR "Unable to create thread\n");
             }
             break;
         case 25:
-            gpio_set_value(leds[1].gpio, level[i]);
-            if (!(togglespeed[1] == 0))
+            ts1 = kthread_create(led_thread1(i), NULL, "led_thread");
+            if (ts1)
             {
-                timer_interval_ns1=togglespeed[i],
-                hrtimer_start(&hr_timer1, togglespeed[i], HRTIMER_MODE_REL);
+                wake_up_process(ts1);
             }
-
+            else
+            {
+                printk(KERN_ERR "Unable to create thread\n");
+            }
             break;
         case 24:
-            gpio_set_value(leds[2].gpio, level[i]);
-            if (!(togglespeed[2] == 0))
+            ts2 = kthread_create(led_thread2(i), NULL, "led_thread");
+            if (ts2)
             {
-                timer_interval_ns2=togglespeed[i],
-                hrtimer_start(&hr_timer2, togglespeed[i], HRTIMER_MODE_REL);
+                wake_up_process(ts2);
+            }
+            else
+            {
+                printk(KERN_ERR "Unable to create thread\n");
             }
             break;
 
@@ -202,6 +269,21 @@ static void __exit gpiomod_exit(void)
 
     printk(KERN_INFO "%s\n", __func__);
 
+     // terminate thread
+	if(ts0) {
+		kthread_stop(ts0);
+	}
+
+    // terminate thread
+	if(ts1) {
+		kthread_stop(ts1);
+	}
+
+    // terminate thread
+	if(ts2) {
+		kthread_stop(ts2);
+	}
+
     ret = hrtimer_cancel(&hr_timer0);
     ret = hrtimer_cancel(&hr_timer1);
     ret = hrtimer_cancel(&hr_timer2);
@@ -209,6 +291,8 @@ static void __exit gpiomod_exit(void)
     {
         printk("Failed to cancel tiemr.\n");
     }
+
+     
 
     // turn all LEDs off
     for (i = 0; i < ARRAY_SIZE(leds); i++)

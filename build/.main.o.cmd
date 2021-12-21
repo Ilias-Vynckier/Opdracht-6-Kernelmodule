@@ -930,6 +930,7 @@ deps_/home/pi/embed2/Opdracht-6-Kernelmodule/build/main.o := \
   include/linux/pinctrl/machine.h \
   include/linux/gpio/consumer.h \
     $(wildcard include/config/gpio/sysfs.h) \
+  include/linux/kthread.h \
 
 /home/pi/embed2/Opdracht-6-Kernelmodule/build/main.o: $(deps_/home/pi/embed2/Opdracht-6-Kernelmodule/build/main.o)
 
