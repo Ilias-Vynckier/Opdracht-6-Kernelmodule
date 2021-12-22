@@ -121,7 +121,6 @@ static int __init gpiomod_init(void)
 
     printk(KERN_INFO "%s\n", __func__);
 
-    //ret = gpio_request_array(leds, ARRAY_SIZE(leds));
     //register LED GPIOs, turn LEDs on
     ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
@@ -150,7 +149,7 @@ static int __init gpiomod_init(void)
             gpio_set_value(leds[0].gpio, level[i]);
             if (!(togglespeed[0] == 0))
             {
-                timer_interval_ns0=togglespeed[i],
+                timer_interval_ns0 = togglespeed[i],
                 hrtimer_start(&hr_timer0, togglespeed[i], HRTIMER_MODE_REL);
             }
             break;
@@ -158,7 +157,7 @@ static int __init gpiomod_init(void)
             gpio_set_value(leds[1].gpio, level[i]);
             if (!(togglespeed[1] == 0))
             {
-                timer_interval_ns1=togglespeed[i],
+                timer_interval_ns1 = togglespeed[i],
                 hrtimer_start(&hr_timer1, togglespeed[i], HRTIMER_MODE_REL);
             }
 
@@ -167,7 +166,7 @@ static int __init gpiomod_init(void)
             gpio_set_value(leds[2].gpio, level[i]);
             if (!(togglespeed[2] == 0))
             {
-                timer_interval_ns2=togglespeed[i],
+                timer_interval_ns2 = togglespeed[i],
                 hrtimer_start(&hr_timer2, togglespeed[i], HRTIMER_MODE_REL);
             }
             break;
@@ -182,12 +181,10 @@ static int __init gpiomod_init(void)
         printk(KERN_INFO "level[%d] = %d\n", i, level[i]);
     }
 
-    for (i = 0; i < (sizeof level / sizeof(int)); i++)
+    for (i = 0; i < (sizeof togglespeed / sizeof(int)); i++)
     {
         printk(KERN_INFO "togglespeed[%d] = %d\n", i, togglespeed[i]);
     }
-
-    printk(KERN_INFO "KAK\n");
 
     return ret;
 }
@@ -221,7 +218,7 @@ static void __exit gpiomod_exit(void)
 }
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Stefan Wendler");
+MODULE_AUTHOR("Ilias Vynckier");
 MODULE_DESCRIPTION("Basic Linux Kernel module using GPIOs to drive LEDs");
 
 module_init(gpiomod_init);
