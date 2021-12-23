@@ -19,6 +19,8 @@ linux/timer.h
 -
 linux/init.h
 -
+linux/kthread.h
+-
 linux/hrtimer.h
 -
 
@@ -1014,6 +1016,12 @@ linux/uidgid.h
 linux/spinlock.h
 -
 linux/refcount.h
+-
+
+/usr/src/linux-headers-5.10.63-v7l+/include/linux/kthread.h
+linux/err.h
+-
+linux/sched.h
 -
 
 /usr/src/linux-headers-5.10.63-v7l+/include/linux/ktime.h

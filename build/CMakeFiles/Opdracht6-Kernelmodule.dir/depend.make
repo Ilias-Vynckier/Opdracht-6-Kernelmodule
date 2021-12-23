@@ -108,6 +108,7 @@ CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/kobject.h
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/kobject_ns.h
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/kref.h
+CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/kthread.h
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/ktime.h
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/latencytop.h
 CMakeFiles/Opdracht6-Kernelmodule.dir/main.c.o: /usr/src/linux-headers-5.10.63-v7l+/include/linux/limits.h
